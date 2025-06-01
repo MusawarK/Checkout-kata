@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Checkout.DLL
+namespace Checkout.DLL.Strategy
 {
-    public interface ICheckout
+    public interface IPricingStrategy
     {
-        void Scan(string item);
-        int GetTotalPrice();
+        int CalculateTotalPrice(string item, int quantity);
     }
 }

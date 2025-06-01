@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Checkout.DLL.Strategy;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +11,11 @@ namespace Checkout.DLL
     {
         private readonly Dictionary<string, int> _items;
 
-        private readonly Dictionary<string, int> _prices = new()
-        {
-            { "A", 50 },
-            { "B", 30 },
-            { "C", 20 },
-            { "D", 15 }
-        };
+        private readonly IPricingStrategy _pricingStrategy;
 
-        public Checkout() {
+        public Checkout(IPricingStrategy pricingStrategy) {
             _items = new Dictionary<string, int>();
+            _pricingStrategy = pricingStrategy;
         }
 
         public void Scan(string item)
@@ -39,22 +35,9 @@ namespace Checkout.DLL
 
             foreach (var item in _items)
             {
-                if (_prices.ContainsKey(item.Key))
-                {
-                    if (item.Key == "A" && item.Value >= 3)
-                    {
-                        int setsOfMultipleItems = item.Value / 3;
-                        int remainingItems = item.Value % 3;
-                        total += (setsOfMultipleItems * 130) + (remainingItems * 50);
-                    }
-                    else
-                    {
-                        total += _prices[item.Key];
-                    }
-                }
-                    
-            } 
-            
+                total += _pricingStrategy.CalculateTotalPrice(item.Key, item.Value);
+            }
+
             return total;
         }
     }

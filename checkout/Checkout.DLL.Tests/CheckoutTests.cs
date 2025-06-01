@@ -1,3 +1,5 @@
+using Checkout.DLL.Strategy;
+
 namespace Checkout.DLL.Tests
 {
     public class CheckoutTests
@@ -5,7 +7,7 @@ namespace Checkout.DLL.Tests
         [Test]
         public void Empty_Basket_Should_Return_0()
         {
-            var sut = new Checkout();
+            var sut = new Checkout(new PricingStrategy());
             int total = sut.GetTotalPrice();
 
             Assert.That(total, Is.EqualTo(0));
@@ -14,7 +16,7 @@ namespace Checkout.DLL.Tests
         [Test]
         public void One_ItemA_In_Basket_Should_Return_50()
         {
-            var sut = new Checkout();
+            var sut = new Checkout(new PricingStrategy());
             sut.Scan("A");
             var total = sut.GetTotalPrice();
             
@@ -24,7 +26,7 @@ namespace Checkout.DLL.Tests
         [Test]
         public void Two_Different_Items_ItemA_And_ItemB_Should_Return_80()
         {
-            var sut = new Checkout();
+            var sut = new Checkout(new PricingStrategy());
             sut.Scan("A");
             sut.Scan("B");
             var total = sut.GetTotalPrice();
@@ -35,7 +37,7 @@ namespace Checkout.DLL.Tests
         [Test]
         public void Three_ItemAs_Should_Apply_Bulk_Discount_And_Return_130()
         {
-            var sut = new Checkout();
+            var sut = new Checkout(new PricingStrategy());
             sut.Scan("A");
             sut.Scan("A");
             sut.Scan("A");
