@@ -16,7 +16,12 @@ namespace Checkout.DLL
 
         public int GetTotalPrice()
         {
-            return 0;
+            int total = 0;
+
+            if (!_items.Any())
+                total = 0;
+
+            return total;
         }
 
     }
