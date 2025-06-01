@@ -87,6 +87,22 @@ namespace Checkout.DLL.Tests
             Assert.That(total, Is.EqualTo(expected));
         }
 
+        [Test]
+        public void Unknown_Item_In_The_Basket_Shoud_Throw_InvalidOperationException()
+        {
+            var sut = new Checkout(_pricingStrategy);
+            sut.Scan("A");
+            sut.Scan("A");
+            sut.Scan("A"); // 3 Items A => 130
+            sut.Scan("B");
+            sut.Scan("B"); // 2 Items B => 45
+            sut.Scan("C"); // 1 Item C => 20
+            sut.Scan("E"); // 1 Item E => Price not set for this item
+
+            var ex = Assert.Throws<InvalidOperationException>(() => sut.GetTotalPrice());
+
+            Assert.That(ex.Message, Does.Contain("Unknown item 'E' in the basket."));
+        }
 
     }
 }
