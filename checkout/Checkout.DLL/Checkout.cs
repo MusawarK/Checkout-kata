@@ -35,7 +35,12 @@ namespace Checkout.DLL
 
             foreach (var item in _items)
             {
-                total += _pricingStrategy.CalculateTotalPrice(item.Key, item.Value);
+                var itemTotal = _pricingStrategy.CalculateTotalPrice(item.Key, item.Value);
+                if(itemTotal <= 0)
+                {
+                    throw new InvalidOperationException($"Unknown item '{item.Key}' in the basket.");
+                }
+                total += itemTotal;
             }
 
             return total;
