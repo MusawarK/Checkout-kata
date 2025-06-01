@@ -40,7 +40,19 @@ namespace Checkout.DLL
             foreach (var item in _items)
             {
                 if (_prices.ContainsKey(item.Key))
-                    total += _prices[item.Key];
+                {
+                    if (item.Key == "A" && item.Value >= 3)
+                    {
+                        int setsOfMultipleItems = item.Value / 3;
+                        int remainingItems = item.Value % 3;
+                        total += (setsOfMultipleItems * 130) + (remainingItems * 50);
+                    }
+                    else
+                    {
+                        total += _prices[item.Key];
+                    }
+                }
+                    
             } 
             
             return total;
