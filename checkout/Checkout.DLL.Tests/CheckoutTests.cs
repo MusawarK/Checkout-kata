@@ -10,5 +10,14 @@ namespace Checkout.DLL.Tests
 
             Assert.That(total, Is.EqualTo(0));
         }
+
+        [Test]
+        public void One_ItemA_In_Basket_Should_Return_50()
+        {
+            var checkout = new Checkout();
+            checkout.Scan("A");
+            var total = checkout.GetTotalPrice();
+            Assert.That(total, Is.EqualTo(50));
+        }
     }
 }

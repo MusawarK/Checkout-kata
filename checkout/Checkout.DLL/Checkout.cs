@@ -14,6 +14,14 @@ namespace Checkout.DLL
             _items = new Dictionary<string, int>();
         }
 
+        public void Scan(string item)
+        {
+            if (_items.ContainsKey(item))
+                _items[item]++;
+            else
+                _items[item] = 1;
+        }
+
         public int GetTotalPrice()
         {
             int total = 0;
@@ -23,6 +31,5 @@ namespace Checkout.DLL
 
             return total;
         }
-
     }
 }
