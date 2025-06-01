@@ -19,5 +19,16 @@ namespace Checkout.DLL.Tests
             var total = checkout.GetTotalPrice();
             Assert.That(total, Is.EqualTo(50));
         }
+
+        [Test]
+        public void Two_Different_Items_ItemA_And_ItemB_Should_Return_80()
+        {
+            var checkout = new Checkout();
+            checkout.Scan("A");
+            checkout.Scan("B");
+            var total = checkout.GetTotalPrice();
+            Assert.That(total, Is.EqualTo(80));
+        }
+
     }
 }
