@@ -10,6 +10,14 @@ namespace Checkout.DLL
     {
         private readonly Dictionary<string, int> _items;
 
+        private readonly Dictionary<string, int> _prices = new()
+        {
+            { "A", 50 },
+            { "B", 30 },
+            { "C", 20 },
+            { "D", 15 }
+        };
+
         public Checkout() {
             _items = new Dictionary<string, int>();
         }
@@ -31,12 +39,8 @@ namespace Checkout.DLL
 
             foreach (var item in _items)
             {
-                switch (item.Key)
-                {
-                    case "A":
-                        total += 50;
-                    break;
-                }
+                if (_prices.ContainsKey(item.Key))
+                    total += _prices[item.Key];
             } 
             
             return total;
