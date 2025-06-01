@@ -17,6 +17,7 @@ namespace Checkout.DLL.Tests
             var sut = new Checkout();
             sut.Scan("A");
             var total = sut.GetTotalPrice();
+            
             Assert.That(total, Is.EqualTo(50));
         }
 
@@ -27,8 +28,23 @@ namespace Checkout.DLL.Tests
             sut.Scan("A");
             sut.Scan("B");
             var total = sut.GetTotalPrice();
+            
             Assert.That(total, Is.EqualTo(80));
         }
+
+        [Test]
+        public void Three_ItemAs_Should_Apply_Bulk_Discount_And_Return_130()
+        {
+            var sut = new Checkout();
+            sut.Scan("A");
+            sut.Scan("A");
+            sut.Scan("A");
+
+            var total = sut.GetTotalPrice();
+
+            Assert.That(total, Is.EqualTo(130));
+        }
+
 
     }
 }
