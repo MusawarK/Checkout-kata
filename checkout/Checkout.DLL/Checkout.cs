@@ -29,6 +29,16 @@ namespace Checkout.DLL
             if (!_items.Any())
                 total = 0;
 
+            foreach (var item in _items)
+            {
+                switch (item.Key)
+                {
+                    case "A":
+                        total += 50;
+                    break;
+                }
+            } 
+            
             return total;
         }
     }
