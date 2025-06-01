@@ -14,19 +14,19 @@ namespace Checkout.DLL.Tests
         [Test]
         public void One_ItemA_In_Basket_Should_Return_50()
         {
-            var checkout = new Checkout();
-            checkout.Scan("A");
-            var total = checkout.GetTotalPrice();
+            var sut = new Checkout();
+            sut.Scan("A");
+            var total = sut.GetTotalPrice();
             Assert.That(total, Is.EqualTo(50));
         }
 
         [Test]
         public void Two_Different_Items_ItemA_And_ItemB_Should_Return_80()
         {
-            var checkout = new Checkout();
-            checkout.Scan("A");
-            checkout.Scan("B");
-            var total = checkout.GetTotalPrice();
+            var sut = new Checkout();
+            sut.Scan("A");
+            sut.Scan("B");
+            var total = sut.GetTotalPrice();
             Assert.That(total, Is.EqualTo(80));
         }
 
