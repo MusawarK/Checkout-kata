@@ -2,9 +2,17 @@ using Checkout.DLL.Strategy;
 
 namespace Checkout.DLL.Tests
 {
+    // ***************************************************************************************************************************************
+    // IMPORTANT NOTES
+    // Future Enhancements
+    // Current tests use in-memory mock/fake objects.
+    // This can be enhanced by introducing mocking frameworks such as Moq or NSubstitute, especially when used in combination with Dependency Injection (DI),
+    // to improve test flexibility, control, and isolation of dependencies during testing.
+    //      However, this should be carefully planned to ensure the actual logic of the System Under Test (SUT) remains thoroughly tested.
+    // ***************************************************************************************************************************************
     public class CheckoutTests
     {
-      IPricingStrategy _pricingStrategy;
+        IPricingStrategy _pricingStrategy;
 
         [SetUp]
         public void Setup()
@@ -24,67 +32,77 @@ namespace Checkout.DLL.Tests
         public void Empty_Basket_Should_Return_0()
         {
             var sut = new Checkout(_pricingStrategy);
-            int total = sut.GetTotalPrice();
 
-            Assert.That(total, Is.EqualTo(0));
+            var expectedTotal = 0;
+
+            var total = sut.GetTotalPrice();
+
+            Assert.That(total, Is.EqualTo(expectedTotal));
         }
 
         [Test]
-        public void One_ItemA_In_Basket_Should_Return_50()
+        public void One_Item_A_In_Basket_Should_Return_Correct_Total_Price() 
         {
             var sut = new Checkout(_pricingStrategy);
             sut.Scan("A");
+
+            var expectedTotal = 50;
             var total = sut.GetTotalPrice();
             
-            Assert.That(total, Is.EqualTo(50));
+            Assert.That(total, Is.EqualTo(expectedTotal));
         }
 
         [Test]
-        public void Two_Different_Items_ItemA_And_ItemB_Should_Return_80()
+        public void Two_Different_Items_A_And_B_Should_Return_Correct_Total_Price()
         {
             var sut = new Checkout(_pricingStrategy);
             sut.Scan("A");
             sut.Scan("B");
+
+            var expectedTotal = 80;
             var total = sut.GetTotalPrice();
             
-            Assert.That(total, Is.EqualTo(80));
+            Assert.That(total, Is.EqualTo(expectedTotal));
         }
 
         [Test]
-        public void Three_ItemAs_Should_Apply_Bulk_Discount_And_Return_130()
+        public void Three_Items_A_Should_Apply_Bulk_Discount_And_Return_Correct_Total_Price()
         {
             var sut = new Checkout(_pricingStrategy);
             sut.Scan("A");
             sut.Scan("A");
             sut.Scan("A");
 
+            var expectedTotal = 130;
             var total = sut.GetTotalPrice();
 
-            Assert.That(total, Is.EqualTo(130));
+            Assert.That(total, Is.EqualTo(expectedTotal));
         }
 
         [Test]
-        public void Two_ItemBs_Should_Apply_Bulk_Discount_And_Return_Total_Price()
+        public void Two_Items_B_Should_Apply_Bulk_Discount_And_Return_Correct_Total_Price()
         {
-            var expected = 45;
             var sut = new Checkout(_pricingStrategy);
             sut.Scan("B");
             sut.Scan("B");
+
+            var expectedTotal = 45;
             var total = sut.GetTotalPrice();
 
-            Assert.That(total, Is.EqualTo(expected));
+            Assert.That(total, Is.EqualTo(expectedTotal));
         }
 
         [Test]
-        public void Single_Different_Items_ItemC_And_ItemD_Should_Return_Total_Price()
+        public void Single_Different_Items_C_And_D_Should_Return_Correct_Total_Price()
         {
-            var expected = 35;
             var sut = new Checkout(_pricingStrategy);
             sut.Scan("C");
             sut.Scan("D");
+
+            var expectedTotal = 35;
             var total = sut.GetTotalPrice();
 
-            Assert.That(total, Is.EqualTo(expected));
+            Assert.That(total, Is.EqualTo(expectedTotal));
         }
 
         [Test]
@@ -99,9 +117,10 @@ namespace Checkout.DLL.Tests
             sut.Scan("C"); // 1 Item C => 20
             sut.Scan("E"); // 1 Item E => Price not set for this item
 
+            var expectedMessage = "Unknown item 'E' in the basket.";
             var ex = Assert.Throws<InvalidOperationException>(() => sut.GetTotalPrice());
 
-            Assert.That(ex.Message, Does.Contain("Unknown item 'E' in the basket."));
+            Assert.That(ex.Message, Does.Contain(expectedMessage));
         }
 
         [Test]
@@ -113,13 +132,14 @@ namespace Checkout.DLL.Tests
             sut.Scan("A");
             sut.Scan("A");
 
+            var expectedTotal = 160;
             var total = sut.GetTotalPrice();
 
-            Assert.That(total, Is.EqualTo(160));
+            Assert.That(total, Is.EqualTo(expectedTotal));
         }
 
         [Test]
-        public void Four_ItemAs_Should_Add_One_Bulk_And_One_Single_Item_Price()
+        public void Four_Items_A_Should_Add_One_Bulk_And_One_Single_Item_Price()
         {
             var sut = new Checkout(_pricingStrategy);
             sut.Scan("A");
@@ -127,9 +147,10 @@ namespace Checkout.DLL.Tests
             sut.Scan("A");
             sut.Scan("A");
 
+            var expectedTotal = 180;
             var total = sut.GetTotalPrice();
 
-            Assert.That(total, Is.EqualTo(180));
+            Assert.That(total, Is.EqualTo(expectedTotal));
         }
 
     }
