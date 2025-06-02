@@ -4,7 +4,7 @@ namespace Checkout.DLL.Tests
 {
     public class CheckoutTests
     {
-        IPricingStrategy _pricingStrategy;
+      IPricingStrategy _pricingStrategy;
 
         [SetUp]
         public void Setup()
@@ -102,6 +102,34 @@ namespace Checkout.DLL.Tests
             var ex = Assert.Throws<InvalidOperationException>(() => sut.GetTotalPrice());
 
             Assert.That(ex.Message, Does.Contain("Unknown item 'E' in the basket."));
+        }
+
+        [Test]
+        public void Items_Order_In_The_Basket_Should_Not_Effect_Total()
+        {
+            var sut = new Checkout(_pricingStrategy);
+            sut.Scan("A");
+            sut.Scan("B");
+            sut.Scan("A");
+            sut.Scan("A");
+
+            var total = sut.GetTotalPrice();
+
+            Assert.That(total, Is.EqualTo(160));
+        }
+
+        [Test]
+        public void Four_ItemAs_Should_Add_One_Bulk_And_One_Single_Item_Price()
+        {
+            var sut = new Checkout(_pricingStrategy);
+            sut.Scan("A");
+            sut.Scan("A");
+            sut.Scan("A");
+            sut.Scan("A");
+
+            var total = sut.GetTotalPrice();
+
+            Assert.That(total, Is.EqualTo(180));
         }
 
     }
