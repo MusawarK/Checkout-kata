@@ -28,6 +28,7 @@ namespace Checkout.DLL.Tests
             _pricingStrategy = pricingStrategy;
         }
 
+
         [Test]
         public void Empty_Basket_Should_Return_0()
         {
@@ -151,6 +152,18 @@ namespace Checkout.DLL.Tests
             var total = sut.GetTotalPrice();
 
             Assert.That(total, Is.EqualTo(expectedTotal));
+        }
+
+        [Test]
+        public void For_Empty_Pricing_Strategies_List_Unknown_Item_In_The_Basket_Shoud_Throw_InvalidOperationException()
+        {
+            var sut = new Checkout(new CompositePricingStrategy(new List<IPricingStrategy>()));
+            sut.Scan("A");
+
+            var expectedMessage = "Unknown item 'A' in the basket.";
+            var ex = Assert.Throws<InvalidOperationException>(() => sut.GetTotalPrice());
+
+            Assert.That(ex.Message, Does.Contain(expectedMessage));
         }
 
     }
